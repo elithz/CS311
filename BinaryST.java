@@ -7,11 +7,18 @@
 // DO NOT INCLUDE LIBRARIES OUTSIDE OF THE JAVA STANDARD LIBRARY
 //  (i.e., you may include java.util.ArrayList etc. here, but not junit, apache commons, google guava, etc.)
 
+/**
+ * @author elith
+ */
+
+import java.util.ArrayList;
 
 public class BinaryST
 {
 	// member fields and methods
 	
+
+
 	public BinaryST()
 	{
 		// implementation
@@ -24,16 +31,19 @@ public class BinaryST
 	
 	public int distinctSize()
 	{
+		return 0;
 		// implementation
 	}
 	
 	public int size()
 	{
+		return 0;
 		// implementation
 	}
 	
 	public int height()
 	{
+		return 0;
 		// implementation
 	}
 	
@@ -44,31 +54,37 @@ public class BinaryST
 	
 	public boolean search(String s)
 	{
+		return false;
 		// implementation
 	}
 	
 	public int frequency(String s)
 	{
+		return 0;
 		// implementation
 	}
 	
 	public boolean remove(String s)
 	{
+		return false;
 		// implementation
 	}
 	
 	public String[] inOrder()
 	{
+		return null;
 		// implementation
 	}
 	
 	public String[] preOrder()
 	{
+		return null;
 		// implementation
 	}
 	
 	public int rankOf(String s)
 	{
+		return 0;
 		// implementation
 	}
 }
