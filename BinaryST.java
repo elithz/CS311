@@ -16,7 +16,11 @@ import java.util.ArrayList;
 public class BinaryST
 {
 	// member fields and methods
-	
+	private int size;
+	private int height;
+	//private boolean search;
+	//private int frequency;
+	//private boolean remove;
 
 
 	public BinaryST()
@@ -37,13 +41,13 @@ public class BinaryST
 	
 	public int size()
 	{
-		return 0;
+		return this.size;
 		// implementation
 	}
 	
 	public int height()
 	{
-		return 0;
+		return this.height;
 		// implementation
 	}
 	
