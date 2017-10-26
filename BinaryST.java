@@ -7,11 +7,17 @@
 // DO NOT INCLUDE LIBRARIES OUTSIDE OF THE JAVA STANDARD LIBRARY
 //  (i.e., you may include java.util.ArrayList etc. here, but not junit, apache commons, google guava, etc.)
 
-/**
- * @author elith
- */
+/**	
+*	@Filename		baMng.c
+*	@Description	Bank Account Manage Server
+*	@Version		1.0
+*	@Created		10.23.2017 13h05min23s
+*	@Author			elith(Ningyuan Zhang)
+*	@Company		NERVE Software
+*/
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class BinaryST
 {
@@ -22,6 +28,15 @@ public class BinaryST
 	//private int frequency;
 	//private boolean remove;
 
+	 class Node{
+		 int key;
+		 Node left, right;
+	 
+		 public Node(int item){
+			 key = item;
+	         left = right = null;
+	     }
+	  }
 
 	public BinaryST()
 	{
