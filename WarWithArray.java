@@ -27,8 +27,8 @@ public class WarWithArray
 	{
 		// implementation
 		ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < data.length; i++){
-		    for(int j = 0;j < data.length; j++){
+		for(int i = 0; i < data.length; i ++){
+		    for(int j = 0;j < data.length; j ++){
 		          if (i != j)
 		              list.add(data[i] + data[j]);
 		    }

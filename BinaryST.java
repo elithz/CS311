@@ -22,7 +22,8 @@ import java.util.NoSuchElementException;
 public class BinaryST
 {
 	// member fields and methods
-	private int size;
+	private int size = 0;
+	private int distinctSize = 0;
 	private int height;
 	private ArrayList<String> str;
 	//private boolean search;
@@ -46,15 +47,20 @@ public class BinaryST
 	{
 		// implementation
 		root = null;
+		size = 0;
+		distinctSize = 0;
+		height = 0;
 	}
 	
 	public BinaryST(String[] s)
 	{
 		// implementation
 		root = null;
-		size = 0;
 		for(int i = 0;i < s.length;i++)
 			this.add(s[i]);
+		size = this.size();
+		distinctSize = this.distinctSize();
+		height = this.height();
 	}
 	
 	public int distinctSize()
@@ -71,20 +77,39 @@ public class BinaryST
 	
 	public int height()
 	{
-		this.height = hOfBST(root);
-		return this.height;
+//		this.height = hOfBST(root);
+//		return this.height;
 		// implementation
+		return heightRec(root);
+		
+	}
+	
+	public int heightRec(Node root){
+		if (root == null)
+            return 0;
+        else
+        {
+            /* compute the depth of each subtree */
+            int lDepth = heightRec(root.left);
+            int rDepth = heightRec(root.right);
+  
+            /* use the larger one */
+            if (lDepth > rDepth)
+                return (lDepth + 1);
+            else
+                return (rDepth + 1);
+        }
 	}
 	
 	
-	public int hOfBST(Node node){
-	    if(node == null)
-	        return 0;
-	    else
-	        return 1 +
-	        Math.max(hOfBST(node.left),
-	            hOfBST(node.right));
-	}
+//	public int hOfBST(Node node){
+//	    if(node == null)
+//	        return 0;
+//	    else
+//	        return 1 +
+//	        Math.max(hOfBST(node.left),
+//	            hOfBST(node.right));
+//	}
 	
 	
 	
@@ -131,7 +156,11 @@ public class BinaryST
 	public int frequency(String s)
 	{
 		int counter = 0;
-		this.search(s);
+		String[] strF = this.inOrder();
+		for(int i = 0; i < strF.length; i ++){
+			if(strF[i].compareTo(s) == 0)
+				counter ++;
+		}
 		return counter;
 		// implementation
 	}
