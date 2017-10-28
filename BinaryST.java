@@ -147,12 +147,36 @@ public class BinaryST
 		// implementation
 	}
 	
-	Node deleteRec(Node root, String key){
+	public Node deleteRec(Node root, String key){
 		if(root == null)
 			return root;
-		if(key.compareTo(root.key) < 0){
+		if(key.compareTo(root.key) < 0)
+			root.left = deleteRec(root.left, key);
+		else if(key.compareTo(root.key) > 0)
+			root.right = deleteRec(root.right, key);
+		
+		else{
+			if(root.left == null)
+				return root.right;
+			else if(root.right == null)
+				return root.left;
 			
+			root.key = minValue(root.right);
+			
+			root.right = deleteRec(root.right, root.key);
 		}
+		
+		return root;
+		
+	}
+	
+	public String minValue(Node root){
+		String minv = root.key;
+		while(!root.left.key.equals(null)){
+			minv = root.left.key;
+			root = root.left;
+		}
+		return minv;
 	}
 	
 	public String[] inOrder()
