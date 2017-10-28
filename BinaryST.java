@@ -30,7 +30,7 @@ public class BinaryST
 	//private boolean remove;
 	private Node root;
 	private ArrayList<String> inOrderStr = new ArrayList<String>();
-	
+	private ArrayList<String> preOrderStr = new ArrayList<String>();
 	
 	class Node{
 		String key;
@@ -190,7 +190,6 @@ public class BinaryST
 	public void inOrderRec(Node root){
 		if(root != null){
 			inOrderRec(root.left);
-//			System.out.println(root.key);
 			inOrderStr.add(root.key);
 			inOrderRec(root.right);
 		}
@@ -198,9 +197,18 @@ public class BinaryST
 	
 	public String[] preOrder()
 	{
-		pre
-		return null;
 		// implementation
+		preOrderStr.clear();
+		preOrderRec(root);
+		return (String[]) preOrderStr.toArray();
+	}
+	
+	public void preOrderRec(Node root){
+		if(root != null){
+			preOrderStr.add(root.key);
+			preOrderRec(root.left);
+			preOrderRec(root.right);
+		}
 	}
 	
 	public int rankOf(String s)
