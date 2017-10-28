@@ -8,8 +8,8 @@
 //  (i.e., you may include java.util.ArrayList etc. here, but not junit, apache commons, google guava, etc.)
 
 /**	
-*	@Filename		baMng.c
-*	@Description	Bank Account Manage Server
+*	@Filename		BinaryST
+*	@Description	BST for PA1
 *	@Version		1.0
 *	@Created		10.23.2017 13h05min23s
 *	@Author			elith(Ningyuan Zhang)
@@ -24,28 +24,55 @@ public class BinaryST
 	// member fields and methods
 	private int size;
 	private int height;
+	private ArrayList<String> str;
 	//private boolean search;
 	//private int frequency;
 	//private boolean remove;
-
-	 class Node{
-		 int key;
-		 Node left, right;
+	private Node root;
+	private ArrayList<String> inOrderStr = new ArrayList<String>();
+	
+	
+	class Node{
+		String key;
+		Node left, right;
 	 
-		 public Node(int item){
-			 key = item;
-	         left = right = null;
-	     }
-	  }
+		public Node(String item){
+			key = item;
+	        left = right = null;
+	    }
+		
+		public boolean search(String key) {
+            if (key == this.key)
+                  return true;
+            else if (key.compareTo(root.key) < 0) {
+                  if (left == null)
+                        return false;
+                  else
+                        return left.search(key);
+            } else if (key.compareTo(root.key) >= 0) {
+                  if (right == null)
+                        return false;
+                  else
+                        return right.search(key);
+            }
+            return false;
+		}
+		
+	}
 
 	public BinaryST()
 	{
 		// implementation
+		root = null;
 	}
 	
 	public BinaryST(String[] s)
 	{
 		// implementation
+		root = null;
+		size = 0;
+		for(int i = 0;i < s.length;i++)
+			this.add(s[i]);
 	}
 	
 	public int distinctSize()
@@ -62,19 +89,49 @@ public class BinaryST
 	
 	public int height()
 	{
+		this.height = hOfBST(root);
 		return this.height;
 		// implementation
 	}
 	
+	
+	public int hOfBST(Node node){
+	    if(node == null)
+	        return 0;
+	    else
+	        return 1 +
+	        Math.max(hOfBST(node.left),
+	            hOfBST(node.right));
+	}
+	
+	
+	
 	public void add(String s)
 	{
 		// implementation
+		root = addRec(root, s);
+		size ++;
+	}
+	
+	public Node addRec(Node root, String key){
+		if(root == null){
+			root = new Node(key);
+			return root;
+		}
+		if(key.compareTo(root.key) < 0)
+			root.left = addRec(root.left, key);
+		else if(key.compareTo(root.key) >= 0)
+			root.right = addRec(root.right, key);
+		return root;
 	}
 	
 	public boolean search(String s)
 	{
-		return false;
 		// implementation
+		 if (root == null)
+             return false;
+         else
+             return root.search(s);
 	}
 	
 	public int frequency(String s)
@@ -85,18 +142,39 @@ public class BinaryST
 	
 	public boolean remove(String s)
 	{
+		
 		return false;
 		// implementation
 	}
 	
+	Node deleteRec(Node root, String key){
+		if(root == null)
+			return root;
+		if(key.compareTo(root.key) < 0){
+			
+		}
+	}
+	
 	public String[] inOrder()
 	{
-		return null;
 		// implementation
+		inOrderStr.clear();
+		inOrderRec(root);
+		return (String[]) inOrderStr.toArray();
+	}
+	
+	public void inOrderRec(Node root){
+		if(root != null){
+			inOrderRec(root.left);
+//			System.out.println(root.key);
+			inOrderStr.add(root.key);
+			inOrderRec(root.right);
+		}
 	}
 	
 	public String[] preOrder()
 	{
+		pre
 		return null;
 		// implementation
 	}

@@ -13,15 +13,28 @@ import java.util.ArrayList;
 public class WarWithArray
 {
 	// member fields and methods
+	private String[] data;
+    private int size;
 	
 	public WarWithArray(String[] s, int k)
 	{
 		// implementation
+		data = s;
+        size = k;
 	}
 	
 	public ArrayList<String> compute2k()
 	{
 		// implementation
-	}
+		ArrayList<String> list = new ArrayList<String>();
+		for (int i = 0; i < data.length; i++){
+		    for(int j = 0;j < data.length; j++){
+		          if (i != j)
+		              list.add(data[i] + data[j]);
+		    }
+		}
+		return list;
+	 }
+
 }
 
