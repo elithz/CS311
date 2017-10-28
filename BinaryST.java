@@ -12,7 +12,7 @@
 *	@Description	BST for PA1
 *	@Version		1.0
 *	@Created		10.23.2017 13h05min23s
-*	@Author			elith(Ningyuan Zhang)
+*	@Author			elith(Ningyuan Zhang), nick(Siyuan Zen)
 *	@Company		NERVE Software
 */
 
@@ -40,24 +40,6 @@ public class BinaryST
 			key = item;
 	        left = right = null;
 	    }
-		
-		public boolean search(String key) {
-            if (key == this.key)
-                  return true;
-            else if (key.compareTo(root.key) < 0) {
-                  if (left == null)
-                        return false;
-                  else
-                        return left.search(key);
-            } else if (key.compareTo(root.key) >= 0) {
-                  if (right == null)
-                        return false;
-                  else
-                        return right.search(key);
-            }
-            return false;
-		}
-		
 	}
 
 	public BinaryST()
@@ -127,33 +109,52 @@ public class BinaryST
 	
 	public boolean search(String s)
 	{
-		// implementation
-		 if (root == null)
-             return false;
-         else
-             return root.search(s);
+		if(searchRec(root, s).equals(null))
+			return false;
+		else
+			return true;
+	}
+	
+	public Node searchRec(Node root, String key){
+		// Base Cases: root is null or key is present at root
+	    if(root == null || root.key.equals(key))
+	        return root;
+	 
+	    // val is greater than root's key
+	    if (root.key.compareTo(key) > 0)
+	        return searchRec(root.left, key);
+	 
+	    // val is less than root's key
+	    return searchRec(root.right, key);
 	}
 	
 	public int frequency(String s)
 	{
-		return 0;
+		int counter = 0;
+		this.search(s);
+		return counter;
 		// implementation
 	}
 	
 	public boolean remove(String s)
 	{
-		
-		return false;
 		// implementation
+		root = removeRec(root, s);
+		if(root.equals(null))
+			return false;
+		else{
+			this.size --;
+			return true;
+		}
 	}
 	
-	public Node deleteRec(Node root, String key){
+	public Node removeRec(Node root, String key){
 		if(root == null)
 			return root;
 		if(key.compareTo(root.key) < 0)
-			root.left = deleteRec(root.left, key);
+			root.left = removeRec(root.left, key);
 		else if(key.compareTo(root.key) > 0)
-			root.right = deleteRec(root.right, key);
+			root.right = removeRec(root.right, key);
 		
 		else{
 			if(root.left == null)
@@ -163,7 +164,7 @@ public class BinaryST
 			
 			root.key = minValue(root.right);
 			
-			root.right = deleteRec(root.right, root.key);
+			root.right = removeRec(root.right, root.key);
 		}
 		
 		return root;
