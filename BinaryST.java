@@ -65,9 +65,21 @@ public class BinaryST
 	
 	public int distinctSize()
 	{
-		return 0;
 		// implementation
+		String[] strF = this.inOrder();
+		int counter = strF.length;
+		for(int i = 0; i < strF.length; i ++){
+			for(int j = i + 1; j < strF.length; j ++){  
+                String num = strF[i];  
+                if(strF[j].compareTo(num) == 0){    
+                    counter --;  
+                    i++;  
+                }  
+            }  
+		}
+		return counter;
 	}
+	
 	
 	public int size()
 	{
@@ -243,7 +255,31 @@ public class BinaryST
 	
 	public int rankOf(String s)
 	{
-		return 0;
 		// implementation
+		int counter = 0;
+		
+		return counter;
 	}
+	
+	int getCount(Node root, String key)
+    {
+        // Base Case
+        if(root == null)
+            return 0;
+ 
+        // If current node is in range, then 
+        // include it in count and recur for 
+        // left and right children of it
+        if(root.key.compareTo(key) < 0)
+            return 1 + this.getCount(root.left, key) + this.getCount(root.right, key);
+                 
+        // If current node is smaller than low, 
+        // then recur for right child
+        else if(root.key.compareTo(key) == 0)
+        	return this.getCount(root.left, key) + this.getCount(root.right, key);
+         
+        // Else recur for left child
+        else
+            return this.getCount(root.left, key);     
+    }
 }

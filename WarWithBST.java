@@ -1,6 +1,13 @@
 
 
-
+/**	
+*	@Filename		WarWithBST.java
+*	@Description	WarWithBST for PA1
+*	@Version		1.0
+*	@Created		10.23.2017 13h05min23s
+*	@Author			elith(Ningyuan Zhang), nick(Siyuan Zen)
+*	@Company		NERVE Software
+*/
 
 import java.util.ArrayList;
 
