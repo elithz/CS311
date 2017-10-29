@@ -81,10 +81,20 @@ public class BinaryST
 	}
 	
 	public int distictSizeRec(Node root){
-		if(!root.key.equals(root.left.key) && !root.key.equals(root.left.key)){
-			return 1 + distictSizeRec(root.left) + distictSizeRec(root.right);
-		}else{
-			return distictSizeRec(root.left) + distictSizeRec(root.right);
+		if(root == null)
+			return 0;
+		if(root.left == null && root.right == null){
+			return 1;
+		}
+		else if(root.left == null && root.key != root.right.key){
+			return 1 + this.distictSizeRec(root.right);
+		}else if(root.right == null && root.key != root.left.key){
+			return 1 + this.distictSizeRec(root.left);
+		}else if(root.left == null && root.key == root.right.key){
+			return this.distictSizeRec(root.left) + this.distictSizeRec(root.right);
+		}
+		else{
+			return this.distictSizeRec(root.left) + this.distictSizeRec(root.right);
 		}
 			
 			
@@ -155,7 +165,7 @@ public class BinaryST
 	
 	public boolean search(String s)
 	{
-		if(searchRec(root, s).equals(null))
+		if(searchRec(root, s) == null)
 			return false;
 		else
 			return true;
