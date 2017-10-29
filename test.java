@@ -28,5 +28,23 @@ public class test {
 		System.out.println(bst.frequency("F"));
 		System.out.println(bst.frequency("G"));
 		System.out.println(bst.rankOf("G"));
+		System.out.println(bst.inOrder()[0]);
+		System.out.println(bst.inOrder()[1]);
+		System.out.println(bst.inOrder()[2]);
+		System.out.println(bst.inOrder()[3]);
+		System.out.println(bst.inOrder()[4]);
+		System.out.println(bst.inOrder()[5]);
+		System.out.println(bst.inOrder()[6]);
+		System.out.println(bst.inOrder()[7]);
+		System.out.println("");
+		System.out.println(bst.preOrder()[0]);
+		System.out.println(bst.preOrder()[1]);
+		System.out.println(bst.preOrder()[2]);
+		System.out.println(bst.preOrder()[3]);
+		System.out.println(bst.preOrder()[4]);
+		System.out.println(bst.preOrder()[5]);
+		System.out.println(bst.preOrder()[6]);
+		System.out.println(bst.preOrder()[7]);
+		System.out.println(bst.distinctSize());
 	}
 }

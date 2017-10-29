@@ -86,17 +86,13 @@ public class BinaryST
 		if(root.left == null && root.right == null){
 			return 1;
 		}
-		else if(root.left == null && root.key != root.right.key){
+		if(root.left == null && root.key != root.right.key){
 			return 1 + this.distictSizeRec(root.right);
 		}else if(root.right == null && root.key != root.left.key){
 			return 1 + this.distictSizeRec(root.left);
-		}else if(root.left == null && root.key == root.right.key){
+		}else{
 			return this.distictSizeRec(root.left) + this.distictSizeRec(root.right);
 		}
-		else{
-			return this.distictSizeRec(root.left) + this.distictSizeRec(root.right);
-		}
-			
 			
 	}
 	
