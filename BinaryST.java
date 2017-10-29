@@ -114,16 +114,6 @@ public class BinaryST
 	}
 	
 	
-//	public int hOfBST(Node node){
-//	    if(node == null)
-//	        return 0;
-//	    else
-//	        return 1 +
-//	        Math.max(hOfBST(node.left),
-//	            hOfBST(node.right));
-//	}
-	
-	
 	
 	public void add(String s)
 	{
@@ -167,15 +157,26 @@ public class BinaryST
 	
 	public int frequency(String s)
 	{
-		int counter = 0;
-		String[] strF = this.inOrder();
-		for(int i = 0; i < strF.length; i ++){
-			if(strF[i].compareTo(s) == 0)
-				counter ++;
-		}
-		return counter;
+		return this.frequencyRec(root, s);
 		// implementation
 	}
+	
+	int frequencyRec(Node root, String key)
+    {
+        // Base Case
+        if(root == null)
+            return 0;
+ 
+        if(root.key.compareTo(key) < 0)
+            return this.frequencyRec(root.left, key) + this.frequencyRec(root.right, key);
+                 
+        else if(root.key.compareTo(key) > 0)
+        	return this.frequencyRec(root.left, key) + this.frequencyRec(root.right, key); 
+        
+        else
+        	return 1 + this.frequencyRec(root.left, key) + this.frequencyRec(root.right, key);
+        
+    }
 	
 	public boolean remove(String s)
 	{
@@ -256,12 +257,13 @@ public class BinaryST
 	public int rankOf(String s)
 	{
 		// implementation
-		int counter = 0;
-		
-		return counter;
+		if(this.search(s))
+			return this.rankRec(root, s);
+		else
+			return -1;
 	}
 	
-	int getCount(Node root, String key)
+	int rankRec(Node root, String key)
     {
         // Base Case
         if(root == null)
@@ -271,15 +273,13 @@ public class BinaryST
         // include it in count and recur for 
         // left and right children of it
         if(root.key.compareTo(key) < 0)
-            return 1 + this.getCount(root.left, key) + this.getCount(root.right, key);
-                 
-        // If current node is smaller than low, 
-        // then recur for right child
+            return 1 + this.rankRec(root.left, key) + this.rankRec(root.right, key);
+       
         else if(root.key.compareTo(key) == 0)
-        	return this.getCount(root.left, key) + this.getCount(root.right, key);
+        	return this.rankRec(root.left, key) + this.rankRec(root.right, key);
          
         // Else recur for left child
         else
-            return this.getCount(root.left, key);     
+            return this.rankRec(root.left, key);     
     }
 }
