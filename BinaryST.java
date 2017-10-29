@@ -17,7 +17,7 @@
 */
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
+
 
 public class BinaryST
 {
@@ -25,7 +25,7 @@ public class BinaryST
 	private int size = 0;
 	private int distinctSize = 0;
 	private int height;
-	private ArrayList<String> str;
+
 	//private boolean search;
 	//private int frequency;
 	//private boolean remove;
@@ -59,32 +59,51 @@ public class BinaryST
 		for(int i = 0;i < s.length;i++)
 			this.add(s[i]);
 		size = this.size();
-		distinctSize = this.distinctSize();
 		height = this.height();
 	}
 	
 	public int distinctSize()
 	{
 		// implementation
-		String[] strF = this.inOrder();
-		int counter = strF.length;
-		for(int i = 0; i < strF.length; i ++){
-			for(int j = i + 1; j < strF.length; j ++){  
-                String num = strF[i];  
-                if(strF[j].compareTo(num) == 0){    
-                    counter --;  
-                    i++;  
-                }  
-            }  
+//		String[] strF = this.inOrder();
+//		int counter = strF.length;
+//		for(int i = 0; i < strF.length; i ++){
+//			for(int j = i + 1; j < strF.length; j ++){  
+//                String num = strF[i];  
+//                if(strF[j].compareTo(num) == 0){    
+//                    counter --;  
+//                    i++;  
+//                }  
+//            }  
+//		}
+//		return counter;
+		return distictSizeRec(root);
+	}
+	
+	public int distictSizeRec(Node root){
+		if(!root.key.equals(root.left.key) && !root.key.equals(root.left.key)){
+			return 1 + distictSizeRec(root.left) + distictSizeRec(root.right);
+		}else{
+			return distictSizeRec(root.left) + distictSizeRec(root.right);
 		}
-		return counter;
+			
+			
 	}
 	
 	
 	public int size()
 	{
-		return this.size;
 		// implementation
+		return this.sizeRec(root);
+	}
+	
+	public int sizeRec(Node root){
+        if(root == null)
+            return 0;
+         
+        // Else recur
+        else
+        	return 1 + this.sizeRec(root.left) + this.sizeRec(root.right);  
 	}
 	
 	public int height()
@@ -161,17 +180,17 @@ public class BinaryST
 		// implementation
 	}
 	
-	int frequencyRec(Node root, String key)
+	public int frequencyRec(Node root, String key)
     {
         // Base Case
         if(root == null)
             return 0;
  
         if(root.key.compareTo(key) < 0)
-            return this.frequencyRec(root.left, key) + this.frequencyRec(root.right, key);
+            return this.frequencyRec(root.right, key);
                  
         else if(root.key.compareTo(key) > 0)
-        	return this.frequencyRec(root.left, key) + this.frequencyRec(root.right, key); 
+        	return this.frequencyRec(root.left, key); 
         
         else
         	return 1 + this.frequencyRec(root.left, key) + this.frequencyRec(root.right, key);
@@ -227,7 +246,7 @@ public class BinaryST
 		// implementation
 		inOrderStr.clear();
 		inOrderRec(root);
-		return (String[]) inOrderStr.toArray();
+		return (String[]) inOrderStr.toArray(new String[inOrderStr.size()]);
 	}
 	
 	public void inOrderRec(Node root){
@@ -243,7 +262,7 @@ public class BinaryST
 		// implementation
 		preOrderStr.clear();
 		preOrderRec(root);
-		return (String[]) preOrderStr.toArray();
+		return (String[]) preOrderStr.toArray(new String[preOrderStr.size()]);
 	}
 	
 	public void preOrderRec(Node root){
@@ -263,7 +282,7 @@ public class BinaryST
 			return -1;
 	}
 	
-	int rankRec(Node root, String key)
+	public int rankRec(Node root, String key)
     {
         // Base Case
         if(root == null)
