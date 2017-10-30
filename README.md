@@ -213,21 +213,10 @@ run time: T(n) = O(n^2) + 2*O(n) + O(n*(k+1))
 ---------------------------------------------------------------------------------------------------------------------
 
 WarWithRollHash:
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.List;
-
-
-
-
-public class WarWithRollHash
-{
-	// member fields and methods
-	private String[] data;
-	private int size;
-	private static ArrayList<String> str;
-	private Hashtable ht;
+	String[] data;
+	int size;
+	static ArrayList<String> str;
+	Hashtable ht;
 	
 	class hshO{
 		int key;
@@ -239,7 +228,7 @@ public class WarWithRollHash
 	    }
 	}
 	
-	public WarWithRollHash(String[] s, int k)
+	WarWithRollHash(String[] s, int k)
 	{
 		// implementation
 		str = new ArrayList<String>();
@@ -254,39 +243,39 @@ public class WarWithRollHash
 	
 
 	
-	public Hashtable hashFunction(ArrayList<String> str) {
-	ht = new Hashtable();
-	List<hshO> list = new ArrayList<hshO>();
+	Hashtable hashFunction(ArrayList<String> str) {
+		ht = new Hashtable();
+		List<hshO> list = new ArrayList<hshO>();
 	
-	int h = 0;
-	for(int i=0; i<str.size(); i++) {
-		for(int j =0; j< str.get(j).length(); j++) {
-			h = h+str.get(i).charAt(j) *3^(str.size()-j);
+		int h = 0;
+		for(int i=0; i<str.size(); i++) {
+			for(int j =0; j< str.get(j).length(); j++) {
+				h = h+str.get(i).charAt(j) *3^(str.size()-j);
+			}
+			h = h % 256;
+			list.add(new hshO(str.get(i), h));
+			h=0;
 		}
-		h = h % 256;
-		list.add(new hshO(str.get(i), h));
-		h=0;
-	}
-	for( int n=0; n<list.size(); n++) {
-		arrHash(list.get(n));
-		
-	}
-	return ht;
+		for( int n=0; n<list.size(); n++) {
+			arrHash(list.get(n));
+				
+		}
+		return ht;
 	
-}
+	}
 
-public void arrHash(hshO wrh) {
+	arrHash(hshO wrh) {
 	
-	if(ht.get(wrh.key) == null) {
-		ht.put(wrh.key, wrh.value);
+		if(ht.get(wrh.key) == null) {
+			ht.put(wrh.key, wrh.value);
+		}
+		else {
+			arrHash( new hshO(wrh.value, wrh.key+1));
+		}
 	}
-	else {
-		arrHash( new hshO(wrh.value, wrh.key+1));
-	}
-}
 
 	
-	public ArrayList<String> compute2k()
+	ArrayList<String> compute2k()
 	{
 		// implementation
 
@@ -326,4 +315,4 @@ public void arrHash(hshO wrh) {
 	
 
 }
-run time: T(n) = O(kn)
+run time: T(n) = O(n^2) + 2*O(n) + O(n*(k+1))
