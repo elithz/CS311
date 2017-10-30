@@ -242,23 +242,23 @@ public class WarWithRollHash
 //	}
 	
 	public Hashtable hashFunction(ArrayList<String> str) {
-	ht = new Hashtable();
-	List<hshO> list = new ArrayList<hshO>();
+		ht = new Hashtable();
+		List<hshO> list = new ArrayList<hshO>();
 	
-	int h = 0;
-	for(int i=0; i<str.size(); i++) {
-		for(int j =0; j< str.get(j).length(); j++) {
-			h = h+str.get(i).charAt(j) *3^(str.size()-j);
+		int h = 0;
+		for(int i=0; i<str.size(); i++) {
+			for(int j =0; j< str.get(j).length(); j++) {
+				h = h+str.get(i).charAt(j) *3^(str.size()-j);
+			}
+			h = h % 256;
+			list.add(new hshO(str.get(i), h));
+			h=0;
 		}
-		h = h % 256;
-		list.add(new hshO(str.get(i), h));
-		h=0;
-	}
-	for( int n=0; n<list.size(); n++) {
-		arrHash(list.get(n));
+		for( int n=0; n<list.size(); n++) {
+			arrHash(list.get(n));
 		
-	}
-	return ht;
+		}
+		return ht;
 	
 }
 
