@@ -22,21 +22,25 @@ public class GraphProcessor
 
 	public int outDegree(String v)
 	{
+		return 0;
 		// implementation
 	}
 
 	public ArrayList<String> bfsPath(String u, String v)
 	{
+		return null;
 		// implementation
 	}
 
 	public int diameter()
 	{
+		return 0;
 		// implementation
 	}
 
 	public int centrality(String v)
 	{
+		return 0;
 		// implementation
 	}
 
