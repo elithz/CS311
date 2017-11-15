@@ -210,7 +210,7 @@ public class GraphProcessor
         // all its neighbors, provided they haven't yet been visited
         while (!queue.isEmpty()) {
             String a = queue.remove();
-            for (String w : graph.get(a).edges) {
+            for (String w : graph.get(a.hashCode()).edges) {
                 if (!dist.contains(w)) {
                     queue.remove(w);
                     dist.put(w, 1 + dist.get(a));
@@ -243,69 +243,5 @@ public class GraphProcessor
 		return 0;
 		// implementation
 	}
-	
-	public boolean sameComponent(String u, String v){
-
-        if(u == null || v == null || u.equals("") || v.equals(""))
-            return false;
-
-        for (String scc: allSCCs) {
-            if(scc.contains(u)){
-                if(scc.contains(v))
-                    return true;
-            }
-        }
-
-        return false;
-    }
-	
-	
-	 public ArrayList<String> componentVertices(String v){
-
-	        ArrayList<String> componentVertice = new ArrayList<>();
-	        int counter = -1;
-	        boolean found = false;
-
-	        //Make sure v is something
-	        if(v.equals(null) || v.equals("")){
-	            return componentVertice;
-	        }
-
-	        //go through the array of SCC's and see if v is in there
-	        for (String scc: allSCCs) {
-	            counter++;
-	            if(scc.contains(v)){
-	                found = true;
-	                break;
-	            }
-	        }
-
-	        //Didn't find v, so return an empty set (I guess I'm not sure what else to return)
-	        if(!found){
-	            return componentVertice;
-	        }
-
-	        //This is where we found v
-	        String scc = allSCCs.get(counter);
-
-	        //so now get each vertex and put it in our array list
-	        for(int i = 0; i < scc.length(); i++){
-	            componentVertice.add(Character.toString(scc.charAt(i)));
-	        }
-
-	        return componentVertice;
-	    }
-	 
-	 public int largestComponent(){
-
-	        return largest;
-	    }
-	 
-	 
-	 public int numComponents(){
-
-	        return components;
-	    }
-	
 
 }
