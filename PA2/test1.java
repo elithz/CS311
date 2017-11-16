@@ -6,9 +6,9 @@ public class test1 {
 		
 	}
 	public static void main(String[] args){
-		//ArrayList<String> topics = new ArrayList();
-		//WikiCrawler wc = new WikiCrawler("/wiki/Computer_Science", 200, topics, "WikiCS.txt");
-		//wc.crawl();
+		ArrayList<String> topics = new ArrayList();
+		WikiCrawler wc = new WikiCrawler("/wiki/Computer_Science", 200, topics, "WikiCS.txt");
+		wc.crawl();
 		GraphProcessor gp = new GraphProcessor("WikiCS.txt");
 		System.out.println(gp.diameter());
 		System.out.println(gp.numVertices);
