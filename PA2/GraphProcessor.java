@@ -309,8 +309,6 @@ public class GraphProcessor
 	}
 	
 	public void compute() throws FileNotFoundException{
-		
-		
 		int maxOutD = 0;
 		String maxOutDPage = "";
 		for (Vertex s : this.graph.values())
@@ -328,7 +326,7 @@ public class GraphProcessor
 		String maxCentrPage = "";
 		for (Vertex s : this.graph.values())
 			if(this.centrality(s.getVertex()) >= maxCentr)
-				maxCentr = this.outDegree(s.getVertex());	
+				maxCentr = this.centrality(s.getVertex());	
 		for (Vertex s : this.graph.values())
 			if(this.centrality(s.getVertex()) == maxCentr)
 				maxCentrPage = maxCentrPage + s.getVertex();
@@ -344,10 +342,12 @@ public class GraphProcessor
 			x++;
 		}
 		int NumEage = x - 1;
-		System.out.printf("maxOutDPage is ", maxOutDPage);
-		System.out.printf("maxCentrPage is ", maxCentrPage);
-		System.out.printf("numVirtex is ", numVir);
-		System.out.printf("num of eage is ", NumEage);
+		
+		System.out.println(maxOutDPage);
+		System.out.println(maxCentrPage);
+		System.out.println(numVir);
+		System.out.println(NumEage);
+		System.out.println(diam);
 	}
 
 }

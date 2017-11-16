@@ -14,13 +14,13 @@ public class test1 {
 		WikiCrawler wc = new WikiCrawler("/wiki/Computer_Science", 200, topics, "WikiCS.txt");
 		wc.crawl();
 		GraphProcessor gp = new GraphProcessor("WikiCS.txt");
-		System.out.println(gp.diameter());
-		System.out.println(gp.numVertices);
-		System.out.println(gp.graph.size());
-		//System.out.println(gp.graph.values().toString());
-		System.out.println(gp.bfsPath("/wiki/Computer_Science", "/wiki/Computational_complexity_theory"));
-		System.out.println(gp.outDegree("/wiki/Procedure_(computer_science)"));
-		System.out.println(gp.centrality("/wiki/Computational_complexity_theory"));
+//		System.out.println(gp.diameter());
+//		System.out.println(gp.numVertices);
+//		System.out.println(gp.graph.size());
+//		//System.out.println(gp.graph.values().toString());
+//		System.out.println(gp.bfsPath("/wiki/Computer_Science", "/wiki/Computational_complexity_theory"));
+//		System.out.println(gp.outDegree("/wiki/Procedure_(computer_science)"));
+//		System.out.println(gp.centrality("/wiki/Computational_complexity_theory"));
 		gp.compute();
 		
 	}
