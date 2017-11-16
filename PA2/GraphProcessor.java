@@ -39,21 +39,8 @@ public class GraphProcessor
 	// other member fields and methods
 
 	 
-    //The hashMap of graph
-    public HashMap<Integer, Vertex> graph;
-    //The hashMap of the reverse graph
-    private HashMap<Integer,Vertex> graphR;
-    //The output from SCC Algo
-    
-    private HashMap<Integer, String> S;
-    //private ArrayList<String> allSCCs;
-    private int components = 0;
-    private int largest = 0;
-
-    
-    //my finishTime 'counter'. FinishDFS said to set FinishTime[
-    private Stack<Vertex> finishTime;
-
+    //hashMaped graph
+    private HashMap<Integer, Vertex> graph;
     public int numVertices = 0;
 	
     
@@ -79,60 +66,59 @@ public class GraphProcessor
             return edges;
         }
 
-        public boolean isVisited(){
-            return visited;
-        }
-
         public void setVisited(boolean visited){
             this.visited = visited;
         }
         
+        public boolean isVisited(){
+            return visited;
+        }
+        
         public boolean hasPathTo(String v){
-    		ST<String, String>  prev = new ST<String, String>();
-    	    ST<String, Integer> dist = new ST<String, Integer>();
-    		Queue<String> queue = new LinkedList<String>();
-            queue.add(this.getVertex());
-            dist.put(this.getVertex(), 0);
-            
-            // repeated remove next vertex v from queue and insert
-            // all its neighbors, provided they haven't yet been visited
-            while (!queue.isEmpty()) {
-                String a = queue.remove();
+    		ST<String, String>  previous = new ST<String, String>();
+    	    ST<String, Integer> distance = new ST<String, Integer>();
+    		Queue<String> q = new LinkedList<String>();
+            q.add(this.getVertex());
+            distance.put(this.getVertex(), 0);
+            //perform bfs on graph
+            while (!q.isEmpty()) {
+                String a = q.remove();
                 for (String w : graph.get(a.hashCode()).edges) {
-                    if (!dist.contains(w)) {
-                        queue.remove(w);
-                        dist.put(w, 1 + dist.get(a));
-                        prev.put(w, a);
+                    if (!distance.contains(w)) {
+                        q.remove(w);
+                        distance.put(w, 1 + distance.get(a));
+                        previous.put(w, a);
                     }
                 }
             }
-            return dist.contains(v);
+            return distance.contains(v);
     	}
         
         public int distanceTo(String v){
-    		ST<String, String>  prev = new ST<String, String>();
-    	    ST<String, Integer> dist = new ST<String, Integer>();
-    		Queue<String> queue = new LinkedList<String>();
-            queue.add(this.getVertex());
-            dist.put(this.getVertex(), 0);
+    		ST<String, String>  previous = new ST<String, String>();
+    	    ST<String, Integer> distance = new ST<String, Integer>();
+    		Queue<String> q = new LinkedList<String>();
+            q.add(this.getVertex());
+            distance.put(this.getVertex(), 0);
             
-            // repeated remove next vertex v from queue and insert
-            // all its neighbors, provided they haven't yet been visited
-            while (!queue.isEmpty()) {
-                String a = queue.remove();
+           //perform bfs on graph
+            while (!q.isEmpty()) {
+                String a = q.remove();
                 for (String w : graph.get(a.hashCode()).edges) {
-                    if (!dist.contains(w)) {
-                        queue.remove(w);
-                        dist.put(w, 1 + dist.get(a));
-                        prev.put(w, a);
+                    if (!distance.contains(w)) {
+                        q.remove(w);
+                        distance.put(w, 1 + distance.get(a));
+                        previous.put(w, a);
                     }
                 }
             }
-            return dist.get(v);
+            return distance.get(v);
     	}
 
     }
     
+    
+    //self-made path structure ST, removed unusable methods
     class ST<Key extends Comparable<Key>, Value> implements Iterable<Key> {
         private TreeMap<Key, Value> st;
         public ST() {
@@ -140,28 +126,28 @@ public class GraphProcessor
         }
 
         public Value get(Key key) {
-            if (key == null) throw new IllegalArgumentException("called get() with null key");
+            if (key == null) throw new IllegalArgumentException();
             return st.get(key);
         }
 
         public void put(Key key, Value val) {
-            if (key == null) throw new IllegalArgumentException("called put() with null key");
+            if (key == null) throw new IllegalArgumentException();
             if (val == null) st.remove(key);
             else             st.put(key, val);
         }
 
         public void delete(Key key) {
-            if (key == null) throw new IllegalArgumentException("called delete() with null key");
+            if (key == null) throw new IllegalArgumentException();
             st.remove(key);
         }
 
         public void remove(Key key) {
-            if (key == null) throw new IllegalArgumentException("called remove() with null key");
+            if (key == null) throw new IllegalArgumentException();
             st.remove(key);
         }
 
         public boolean contains(Key key) {
-            if (key == null) throw new IllegalArgumentException("called contains() with null key");
+            if (key == null) throw new IllegalArgumentException();
             return st.containsKey(key);
         }
 
@@ -181,29 +167,6 @@ public class GraphProcessor
             return st.keySet().iterator();
         }
 
-        public Key min() {
-            if (isEmpty()) throw new NoSuchElementException("called min() with empty symbol table");
-            return st.firstKey();
-        }
-
-        public Key max() {
-            if (isEmpty()) throw new NoSuchElementException("called max() with empty symbol table");
-            return st.lastKey();
-        }
-
-        public Key ceiling(Key key) {
-            if (key == null) throw new IllegalArgumentException("called ceiling() with null key");
-            Key k = st.ceilingKey(key);
-            if (k == null) throw new NoSuchElementException("all keys are less than " + key);
-            return k;
-        }
-
-        public Key floor(Key key) {
-            if (key == null) throw new IllegalArgumentException("called floor() with null key");
-            Key k = st.floorKey(key);
-            if (k == null) throw new NoSuchElementException("all keys are greater than " + key);
-            return k;
-        }
     }
     
 	//NOTE: graphData should be an absolute file path
@@ -212,32 +175,28 @@ public class GraphProcessor
 		// implementation
 		 try{
 	            //First build the graph
-	            FileReader data = new FileReader(new File(graphData));
-	            Scanner s = new Scanner(data);
+	            FileReader path = new FileReader(new File(graphData));
+	            Scanner s = new Scanner(path);
 	            numVertices = s.nextInt();
 	            graph = new HashMap<>();
 	            while(s.hasNext()){
-	                String first = s.next();
-	                String second = s.next();
-	                //if a new vertex is coming in at the first spot, put it in first
-	                if(!graph.containsKey(first.hashCode())){
-	                    Vertex g = new Vertex(first);
-	                    graph.put(first.hashCode(), g);
+	                String a = s.next();
+	                String b = s.next();
+	                //if new vertex comes in, put it in a
+	                if(!graph.containsKey(a.hashCode())){
+	                    Vertex g = new Vertex(a);
+	                    graph.put(a.hashCode(), g);
 	                }
-	                //add the edge connection to the second vertex
-	                graph.get(first.hashCode()).setEdge(second);
-	                //check the second vertex and make sure its in the graph
-	                if(!graph.containsKey(second.hashCode())){
-	                    Vertex g = new Vertex(second);
-	                    graph.put(second.hashCode(), g);
+	                //connect to b vertex
+	                graph.get(a.hashCode()).setEdge(b);
+	                //check b vertex to make sure in graph
+	                if(!graph.containsKey(b.hashCode())){
+	                    Vertex g = new Vertex(b);
+	                    graph.put(b.hashCode(), g);
 	                }
 	            }
 
 	            s.close();
-
-	            //Now find the SCC's
-	            //using the private methods below derived from the lecture notes.
-	            //SCC();
 	        }catch (Exception e){
 	            e.printStackTrace();
 	        }
@@ -256,29 +215,29 @@ public class GraphProcessor
 	public ArrayList<String> bfsPath(String u, String v)
 	{
 		// implementation
-		ST<String, String>  prev = new ST<String, String>();
-	    ST<String, Integer> dist = new ST<String, Integer>();
-		Queue<String> queue = new LinkedList<String>();
-        queue.add(u);
-        dist.put(u, 0);
+		ST<String, String>  previous = new ST<String, String>();
+	    ST<String, Integer> distance = new ST<String, Integer>();
+		Queue<String> q = new LinkedList<String>();
+        q.add(u);
+        distance.put(u, 0);
         
-        // repeated remove next vertex v from queue and insert
+        // repeated remove next vertex v from q and insert
         // all its neighbors, provided they haven't yet been visited
-        while (!queue.isEmpty()) {
-            String a = queue.remove();
+        while (!q.isEmpty()) {
+            String a = q.remove();
             for (String w : graph.get(a.hashCode()).edges) {
-                if (!dist.contains(w)) {
-                    queue.remove(w);
-                    dist.put(w, 1 + dist.get(a));
-                    prev.put(w, a);
+                if (!distance.contains(w)) {
+                    q.remove(w);
+                    distance.put(w, 1 + distance.get(a));
+                    previous.put(w, a);
                 }
             }
         }
         
         ArrayList<String> path = new ArrayList<String>();
-        while (v != null && dist.contains(v)) {
+        while (v != null && distance.contains(v)) {
             path.add(v);
-            v = prev.get(v);
+            v = previous.get(v);
         }
         return path;
 	}
@@ -308,7 +267,7 @@ public class GraphProcessor
 	    return counter;
 	}
 	
-	public void compute() throws FileNotFoundException{
+	private void compute() throws FileNotFoundException{
 		int maxOutD = 0;
 		String maxOutDPage = "";
 		for (Vertex s : this.graph.values())
@@ -335,8 +294,8 @@ public class GraphProcessor
 		
 		String temp = "";
 		int x = 0;
-		FileReader data = new FileReader(new File("wikiCS.txt"));
-        Scanner s = new Scanner(data);
+		FileReader path = new FileReader(new File("wikiCS.txt"));
+        Scanner s = new Scanner(path);
 		while(s.hasNext()){
 			temp = s.next();
 			x++;
