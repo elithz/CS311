@@ -43,6 +43,50 @@ public class GraphProcessor
     private HashMap<Integer, Vertex> graph;
     public int numVertices = 0;
 	
+  //self-made path structure STTR, removed unusable methods
+    class STTR<Key extends Comparable<Key>, Value> implements Iterable<Key> {
+        private TreeMap<Key, Value> st;
+        public STTR() {
+            st = new TreeMap<Key, Value>();
+        }
+
+        public Value get(Key key) {
+            if (key == null) throw new IllegalArgumentException();
+            return st.get(key);
+        }
+
+        public void put(Key key, Value val) {
+            if (key == null) throw new IllegalArgumentException();
+            if (val == null) st.remove(key);
+            else             st.put(key, val);
+        }
+
+        public void delete(Key key) {
+            if (key == null) throw new IllegalArgumentException();
+            st.remove(key);
+        }
+
+        public void remove(Key key) {
+            if (key == null) throw new IllegalArgumentException();
+            st.remove(key);
+        }
+
+        public boolean contains(Key key) {
+            if (key == null) throw new IllegalArgumentException();
+            return st.containsKey(key);
+        }
+
+
+        public Iterable<Key> keys() {
+            return st.keySet();
+        }
+
+        public Iterator<Key> iterator() {
+            return st.keySet().iterator();
+        }
+
+    }
+    
     
     class Vertex {
         private String vertex;
@@ -75,8 +119,8 @@ public class GraphProcessor
         }
         
         public boolean hasPathTo(String v){
-    		ST<String, String>  previous = new ST<String, String>();
-    	    ST<String, Integer> distance = new ST<String, Integer>();
+    		STTR<String, String>  previous = new STTR<String, String>();
+    	    STTR<String, Integer> distance = new STTR<String, Integer>();
     		Queue<String> q = new LinkedList<String>();
             q.add(this.getVertex());
             distance.put(this.getVertex(), 0);
@@ -95,8 +139,8 @@ public class GraphProcessor
     	}
         
         public int distanceTo(String v){
-    		ST<String, String>  previous = new ST<String, String>();
-    	    ST<String, Integer> distance = new ST<String, Integer>();
+    		STTR<String, String>  previous = new STTR<String, String>();
+    	    STTR<String, Integer> distance = new STTR<String, Integer>();
     		Queue<String> q = new LinkedList<String>();
             q.add(this.getVertex());
             distance.put(this.getVertex(), 0);
@@ -118,56 +162,7 @@ public class GraphProcessor
     }
     
     
-    //self-made path structure ST, removed unusable methods
-    class ST<Key extends Comparable<Key>, Value> implements Iterable<Key> {
-        private TreeMap<Key, Value> st;
-        public ST() {
-            st = new TreeMap<Key, Value>();
-        }
-
-        public Value get(Key key) {
-            if (key == null) throw new IllegalArgumentException();
-            return st.get(key);
-        }
-
-        public void put(Key key, Value val) {
-            if (key == null) throw new IllegalArgumentException();
-            if (val == null) st.remove(key);
-            else             st.put(key, val);
-        }
-
-        public void delete(Key key) {
-            if (key == null) throw new IllegalArgumentException();
-            st.remove(key);
-        }
-
-        public void remove(Key key) {
-            if (key == null) throw new IllegalArgumentException();
-            st.remove(key);
-        }
-
-        public boolean contains(Key key) {
-            if (key == null) throw new IllegalArgumentException();
-            return st.containsKey(key);
-        }
-
-        public int size() {
-            return st.size();
-        }
-
-        public boolean isEmpty() {
-            return size() == 0;
-        }
-
-        public Iterable<Key> keys() {
-            return st.keySet();
-        }
-
-        public Iterator<Key> iterator() {
-            return st.keySet().iterator();
-        }
-
-    }
+    
     
 	//NOTE: graphData should be an absolute file path
 	public GraphProcessor(String graphData)
@@ -215,8 +210,8 @@ public class GraphProcessor
 	public ArrayList<String> bfsPath(String u, String v)
 	{
 		// implementation
-		ST<String, String>  previous = new ST<String, String>();
-	    ST<String, Integer> distance = new ST<String, Integer>();
+		STTR<String, String>  previous = new STTR<String, String>();
+	    STTR<String, Integer> distance = new STTR<String, Integer>();
 		Queue<String> q = new LinkedList<String>();
         q.add(u);
         distance.put(u, 0);

@@ -45,10 +45,11 @@ class WikiCrawler
 	private String seedUrl;
 	private String[] topics;
 	private int max;
-	private int numCrawled; //# of pages that contain topics
-	private int pagesRequested;
+	private int crawled; //# of pages that contain topics
+	private int pagesReq;
 	private String fileName; 
 	
+	//ignorelist filter
 	private static final List<String> IGNORE_LIST = new ArrayList<String>() {{
 		add("trap"); add("/wiki/Special");
 		add("/wiki/Wikipedia:Articles_for_deletion");
@@ -85,20 +86,20 @@ class WikiCrawler
 		this.seedUrl = seedUrl;
 		this.topics = (String[]) topics.toArray(new String[topics.size()]);
 		this.max = max;
-		numCrawled = 0;
-		pagesRequested = 0;
+		crawled = 0;
+		pagesReq = 0;
 		this.fileName = fileName;
 	}
 	
 	
 	
-	public class wikiParser {
+	public class pageParser {
 		private URL page;
 		private URL contentPage;
 		private String[] searchTopics;
 		private boolean containTopics;
 		
-		public wikiParser(String page, String[] searchTopics) {
+		public pageParser(String page, String[] searchTopics) {
 			try {
 				this.page = new URL(page);
 				this.contentPage = urlTransform(this.page);
@@ -136,12 +137,13 @@ class WikiCrawler
 			return(url);
 		}
 		
-		private boolean containsAll(String html) {
-			html = html.toLowerCase();
-			html = html.replaceAll("\\p{P}", " ");
+		private boolean containsAll(String htmlstr) {
+			htmlstr = htmlstr.toLowerCase();
+			htmlstr = htmlstr.replaceAll("\\p{P}", " ");
 			
 			for(int i = 0; i < searchTopics.length; i++)
-				if(!html.contains(searchTopics[i].toLowerCase())) return(false);
+				if(!htmlstr.contains(searchTopics[i].toLowerCase()))
+					return(false);
 			
 			return(true);
 		}
@@ -184,25 +186,25 @@ class WikiCrawler
 	}
 	
 	
-	private List<String> getURLs(String html) {
+	private List<String> getURLs(String htmlstr) {
 		List<String> urls = new ArrayList<String>();
-		int startPos = 0;
-		int endPos = 0;
+		int startPt = 0;
+		int endPt = 0;
 		
-		boolean ignoreLine;
-		while(startPos >= 0) {
-			startPos = html.indexOf("<a href=", startPos);
-			if(startPos >= 0) {
-				startPos = html.indexOf("\"", startPos) + 1;
-				endPos = html.indexOf("\"", startPos);
+		boolean passLine;
+		while(startPt >= 0) {
+			startPt = htmlstr.indexOf("<a href=", startPt);
+			if(startPt >= 0) {
+				startPt = htmlstr.indexOf("\"", startPt) + 1;
+				endPt = htmlstr.indexOf("\"", startPt);
 				
-				ignoreLine = false;
+				passLine = false;
 				for(String i : IGNORE_LIST) {
-					if(html.substring(startPos, endPos).contains(i)) ignoreLine = true;
+					if(htmlstr.substring(startPt, endPt).contains(i)) passLine = true;
 				}
 				
-				if(!ignoreLine) {
-					urls.add(html.substring(startPos, endPos));
+				if(!passLine) {
+					urls.add(htmlstr.substring(startPt, endPt));
 				}
 			}
 		} 
@@ -216,11 +218,11 @@ class WikiCrawler
 	public void crawl()
 	{
 		// implementation
-		wikiParser c = new wikiParser(BASE_URL + seedUrl, topics);
+		pageParser c = new pageParser(BASE_URL + seedUrl, topics);
 		if(c.pageContainTopics()) {
 			toVisit.add(seedUrl);
-			pagesRequested++;
-			numCrawled++;
+			pagesReq++;
+			crawled++;
 		}
 		visitedUsefulURL.add(seedUrl);
 
@@ -228,7 +230,7 @@ class WikiCrawler
 		boolean keepCrawling = true;
 		while(keepCrawling) {
 			try {
-				keepCrawling = crawlNext();
+				keepCrawling = nextCrawl();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -243,18 +245,18 @@ class WikiCrawler
 	}
 	
 	
-	private boolean crawlNext() throws InterruptedException {
+	private boolean nextCrawl() throws InterruptedException {
 		if(toVisit.isEmpty()) return(false);
 		String fromPage = toVisit.poll();
 		
 		System.out.println("fromPage: " + BASE_URL + fromPage);
 		ArrayList<String> newLinks = this.extractLinks(BASE_URL + fromPage);
 		
-		pagesRequested++;
+		pagesReq++;
 		
-		wikiParser c;
+		pageParser c;
 		for(String l : newLinks) {	
-			System.out.println("got: " + numCrawled + ", in Q: " + toVisit.size() + " toPage: " + BASE_URL + l); //TODO
+			System.out.println("got: " + crawled + ", in Q: " + toVisit.size() + " toPage: " + BASE_URL + l); //TODO
 			 
 			if(visitedUsefulURL.contains(l) && !fromPage.equalsIgnoreCase(l)) 
 				//have seen the page and contains topics
@@ -262,18 +264,18 @@ class WikiCrawler
 			else if(visitedURL.contains(l) || fromPage.equalsIgnoreCase(l)) { 
 				//have seen the page but no topics in it
 				//do nothing
-			} else if(numCrawled < max) { 
+			} else if(crawled < max) { 
 				//new page, need to keep crawling
-				c = new wikiParser(BASE_URL + l, topics);
-				if(pagesRequested % 200 == 0) 
+				c = new pageParser(BASE_URL + l, topics);
+				if(pagesReq % 200 == 0) 
 					Thread.sleep(2000);
-				pagesRequested++;
+				pagesReq++;
 				
 				if(c.pageContainTopics()) {
 					toVisit.add(l);
 					edges.add(fromPage + " " + l);
 					visitedUsefulURL.add(l);
-					numCrawled++;
+					crawled++;
 				} else 
 					visitedURL.add(l);
 				

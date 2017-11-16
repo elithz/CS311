@@ -6,3 +6,5 @@
 /GraphProcessor$Vertex.class
 /GraphProcessor$ST.class
 /WikiCrawler$wikiParser.class
+/GraphProcessor$STTR.class
+/WikiCrawler$pageParser.class
