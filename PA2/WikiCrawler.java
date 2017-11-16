@@ -7,6 +7,16 @@
 // DO NOT INCLUDE LIBRARIES OUTSIDE OF THE JAVA STANDARD LIBRARY
 //  (i.e., you may include java.util.ArrayList etc. here, but not junit, apache commons, google guava, etc.)
 
+
+/**	
+*	@Filename		WikiCrawler.java
+*	@Description	WikiCrawler of PA2
+*	@Version		1.0
+*	@Created		11.10.2017 15h00min23s
+*	@Author			elith(Ningyuan Zhang), nick(Siyuan Zen)
+*	@Company		NERVE Software
+*/
+
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,15 +37,15 @@ class WikiCrawler
 	static final String BASE_URL = "https://en.wikipedia.org";
 	// other member fields and methods
 
-	private LinkedList<String> toVisit; //link queue
-	private Set<String> visitedURL; //visited URL that does not contain search terms
-	private Set<String> visitedUsefulURL; //visited URL that contains search terms
+	private LinkedList<String> toVisit; //link queue of vertices need to be visited
+	private Set<String> visitedURL; //visited URLs witch don't contain topics
+	private Set<String> visitedUsefulURL; //visited URLs which contain topics
 	private List<String> edges;
 	
-	private String seedUrl; //start url
-	private String[] topics; //search words
-	private int max; //max number of pages
-	private int numCrawled; //number of pages that contain search words
+	private String seedUrl;
+	private String[] topics;
+	private int max;
+	private int numCrawled; //# of pages that contain topics
 	private int pagesRequested;
 	private String fileName; 
 	

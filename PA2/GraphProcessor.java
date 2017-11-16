@@ -7,6 +7,17 @@
 // DO NOT INCLUDE LIBRARIES OUTSIDE OF THE JAVA STANDARD LIBRARY
 //  (i.e., you may include java.util.ArrayList etc. here, but not junit, apache commons, google guava, etc.)
 
+
+/**	
+*	@Filename		GraphProcessor.java
+*	@Description	GraphProcessor of PA2
+*	@Version		1.0
+*	@Created		11.10.2017 15h00min23s
+*	@Author			elith(Ningyuan Zhang), nick(Siyuan Zen)
+*	@Company		NERVE Software
+*/
+
+
 import java.util.ArrayList;
 
 import java.io.File;
@@ -28,7 +39,7 @@ public class GraphProcessor
 
 	 
     //The hashMap of graph
-    private HashMap<Integer, Vertex> graph;
+    public HashMap<Integer, Vertex> graph;
     //The hashMap of the reverse graph
     private HashMap<Integer,Vertex> graphR;
     //The output from SCC Algo
@@ -42,7 +53,7 @@ public class GraphProcessor
     //my finishTime 'counter'. FinishDFS said to set FinishTime[
     private Stack<Vertex> finishTime;
 
-    private int numVertices = 0;
+    public int numVertices = 0;
 	
     
     class Vertex {
@@ -276,7 +287,6 @@ public class GraphProcessor
 		// implementation
 		 int best = -1;
 	     for (Vertex s : graph.values()) {
-	         //PathFinder finder = new PathFinder(G, s);
 	         for (Vertex v : graph.values()) {
 	             if (s.hasPathTo(v.getVertex()) && s.distanceTo(v.getVertex()) > best) {
 	                 best = s.distanceTo(v.getVertex());
@@ -288,8 +298,13 @@ public class GraphProcessor
 	
 	public int centrality(String v)
 	{
-		return 0;
 		// implementation
+		int counter = 0;
+		for (Vertex s : graph.values()) 
+	         for (Vertex x : graph.values()) 
+	        	 if(this.bfsPath(s.getVertex(), x.getVertex()).contains(v))
+	        			 counter++;
+	    return counter;
 	}
 
 }
