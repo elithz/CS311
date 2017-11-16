@@ -74,6 +74,50 @@ public class GraphProcessor
         public void setVisited(boolean visited){
             this.visited = visited;
         }
+        
+        public boolean hasPathTo(String v){
+    		ST<String, String>  prev = new ST<String, String>();
+    	    ST<String, Integer> dist = new ST<String, Integer>();
+    		Queue<String> queue = new LinkedList<String>();
+            queue.add(this.getVertex());
+            dist.put(this.getVertex(), 0);
+            
+            // repeated remove next vertex v from queue and insert
+            // all its neighbors, provided they haven't yet been visited
+            while (!queue.isEmpty()) {
+                String a = queue.remove();
+                for (String w : graph.get(a.hashCode()).edges) {
+                    if (!dist.contains(w)) {
+                        queue.remove(w);
+                        dist.put(w, 1 + dist.get(a));
+                        prev.put(w, a);
+                    }
+                }
+            }
+            return dist.contains(v);
+    	}
+        
+        public int distanceTo(String v){
+    		ST<String, String>  prev = new ST<String, String>();
+    	    ST<String, Integer> dist = new ST<String, Integer>();
+    		Queue<String> queue = new LinkedList<String>();
+            queue.add(this.getVertex());
+            dist.put(this.getVertex(), 0);
+            
+            // repeated remove next vertex v from queue and insert
+            // all its neighbors, provided they haven't yet been visited
+            while (!queue.isEmpty()) {
+                String a = queue.remove();
+                for (String w : graph.get(a.hashCode()).edges) {
+                    if (!dist.contains(w)) {
+                        queue.remove(w);
+                        dist.put(w, 1 + dist.get(a));
+                        prev.put(w, a);
+                    }
+                }
+            }
+            return dist.get(v);
+    	}
 
     }
     
@@ -234,57 +278,12 @@ public class GraphProcessor
 	     for (Vertex s : graph.values()) {
 	         //PathFinder finder = new PathFinder(G, s);
 	         for (Vertex v : graph.values()) {
-	             if (this.hasPathTo(v.getVertex()) && this.distanceTo(v.getVertex()) > best) {
-	                 best = this.distanceTo(v.getVertex());
+	             if (s.hasPathTo(v.getVertex()) && s.distanceTo(v.getVertex()) > best) {
+	                 best = s.distanceTo(v.getVertex());
 	             }
 	         }
 	     }
 	     return best;
-	}
-
-	
-	private boolean hasPathTo(String v){
-		ST<String, String>  prev = new ST<String, String>();
-	    ST<String, Integer> dist = new ST<String, Integer>();
-		Queue<String> queue = new LinkedList<String>();
-        queue.add(v);
-        dist.put(v, 0);
-        
-        // repeated remove next vertex v from queue and insert
-        // all its neighbors, provided they haven't yet been visited
-        while (!queue.isEmpty()) {
-            String a = queue.remove();
-            for (String w : graph.get(a.hashCode()).edges) {
-                if (!dist.contains(w)) {
-                    queue.remove(w);
-                    dist.put(w, 1 + dist.get(a));
-                    prev.put(w, a);
-                }
-            }
-        }
-        return dist.contains(v);
-	}
-	
-	private int distanceTo(String v){
-		ST<String, String>  prev = new ST<String, String>();
-	    ST<String, Integer> dist = new ST<String, Integer>();
-		Queue<String> queue = new LinkedList<String>();
-        queue.add(v);
-        dist.put(v, 0);
-        
-        // repeated remove next vertex v from queue and insert
-        // all its neighbors, provided they haven't yet been visited
-        while (!queue.isEmpty()) {
-            String a = queue.remove();
-            for (String w : graph.get(a.hashCode()).edges) {
-                if (!dist.contains(w)) {
-                    queue.remove(w);
-                    dist.put(w, 1 + dist.get(a));
-                    prev.put(w, a);
-                }
-            }
-        }
-        return dist.get(v);
 	}
 	
 	public int centrality(String v)
