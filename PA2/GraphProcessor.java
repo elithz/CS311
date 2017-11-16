@@ -21,6 +21,7 @@
 import java.util.ArrayList;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -305,6 +306,48 @@ public class GraphProcessor
 	        	 if(this.bfsPath(s.getVertex(), x.getVertex()).contains(v))
 	        			 counter++;
 	    return counter;
+	}
+	
+	public void compute() throws FileNotFoundException{
+		
+		
+		int maxOutD = 0;
+		String maxOutDPage = "";
+		for (Vertex s : this.graph.values())
+			if(this.outDegree(s.getVertex()) >= maxOutD)
+				maxOutD = this.outDegree(s.getVertex());	
+		for (Vertex s : this.graph.values())
+			if(this.outDegree(s.getVertex()) == maxOutD)
+				maxOutDPage = maxOutDPage + s.getVertex();
+		
+		
+		int diam = this.diameter();
+		
+		
+		int maxCentr = 0;
+		String maxCentrPage = "";
+		for (Vertex s : this.graph.values())
+			if(this.centrality(s.getVertex()) >= maxCentr)
+				maxCentr = this.outDegree(s.getVertex());	
+		for (Vertex s : this.graph.values())
+			if(this.centrality(s.getVertex()) == maxCentr)
+				maxCentrPage = maxCentrPage + s.getVertex();
+		
+		int numVir = this.numVertices;
+		
+		String temp = "";
+		int x = 0;
+		FileReader data = new FileReader(new File("wikiCS.txt"));
+        Scanner s = new Scanner(data);
+		while(s.hasNext()){
+			temp = s.next();
+			x++;
+		}
+		int NumEage = x - 1;
+		System.out.printf("maxOutDPage is ", maxOutDPage);
+		System.out.printf("maxCentrPage is ", maxCentrPage);
+		System.out.printf("numVirtex is ", numVir);
+		System.out.printf("num of eage is ", NumEage);
 	}
 
 }
