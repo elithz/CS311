@@ -224,18 +224,23 @@ public class GraphProcessor
             path.add(v);
             v = prev.get(v);
         }
-        
-        if(dist.contains(v))
-        	return path;
-        else
-        	return null;
-        
+        return path;
 	}
 
 	public int diameter()
 	{
-		return 0;
 		// implementation
+		 int best = -1;
+	        for (String s : G.vertices()) {
+	            PathFinder finder = new PathFinder(G, s);
+	            for (String v : G.vertices()) {
+	                if (finder.hasPathTo(v) && finder.distanceTo(v) > best) {
+	                    StdOut.println(finder.pathTo(v));
+	                    StdOut.println();
+	                    best = finder.distanceTo(v);
+	                }
+	            }
+	        }
 	}
 
 	public int centrality(String v)
